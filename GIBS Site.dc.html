@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/vendor/dc-resources.js"></script>
+<script src="/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="/vendor/fonts/big-shoulders-display/700.css">
+<link rel="stylesheet" href="/vendor/fonts/big-shoulders-display/800.css">
+<link rel="stylesheet" href="/vendor/fonts/big-shoulders-display/900.css">
+<link rel="stylesheet" href="/vendor/fonts/archivo/400.css">
+<link rel="stylesheet" href="/vendor/fonts/archivo/500.css">
+<link rel="stylesheet" href="/vendor/fonts/archivo/600.css">
+<link rel="stylesheet" href="/vendor/fonts/archivo/700.css">
+<script src="/vendor/gsap.min.js"></script>
+<script src="/vendor/ScrollTrigger.min.js"></script>
+<script src="/vendor/lenis.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#F3F4F6}
+body{font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.6;color:#0A1A33;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+img{display:block;max-width:100%}
+a{color:#0A1A33;text-decoration:none}
+a:hover{color:#1B4F9C}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #E3B23C;outline-offset:2px}
+::selection{background:#E3B23C;color:#0A1A33}
+details summary::-webkit-details-marker{display:none}
+details[open] [data-plus]{transform:rotate(45deg)}
+@media print{body{background:#fff}}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="position:relative;background:#F3F4F6;overflow-x:clip;min-height:100vh">
+
+  <div data-curtain="" style="position:fixed;inset:0;z-index:300;background:#0A1A33;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px">
+    <img data-curtain-logo="" src="assets/logo-mark.jpg" alt="" style="width:104px;height:104px;border-radius:50%;object-fit:cover;border:2px solid #E3B23C">
+    <span data-curtain-logo="" style="font-family:'Big Shoulders Display';font-weight:900;font-size:24px;letter-spacing:.32em;color:#fff;padding-left:.32em">GIBS</span>
+    <div style="width:160px;height:2px;background:rgba(227,178,60,.2);overflow:hidden"><div data-curtain-bar="" style="height:100%;width:100%;background:#E3B23C;transform:scaleX(0);transform-origin:left"></div></div>
+  </div>
+
+  <header style="position:fixed;top:0;left:0;right:0;z-index:100;color:#fff;background:{{ hdrBg }};box-shadow:{{ hdrShadow }};transition:background .35s,box-shadow .35s">
+    <div style="height:{{ topH }};overflow:hidden;transition:height .35s;background:#071327;font-size:13.5px;color:#AAB7CB">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);height:40px;display:flex;align-items:center;justify-content:space-between;gap:20px">
+        <span style="display:flex;align-items:center;gap:8px"><i style="display:block;width:7px;height:7px;background:#E3B23C"></i>Jl. Imam Bonjol No. 39, Cakranegara, Kota Mataram</span>
+        <div style="display:{{ navDisplay }};gap:28px;align-items:center">
+          <span>Senin–Sabtu, 09.00–17.00 WITA</span>
+          <a href="#/penawaran" style="color:#E3B23C;font-weight:600" style-hover="color:#fff">Order lewat WhatsApp →</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);height:{{ barH }};transition:height .35s;display:flex;align-items:center;justify-content:space-between;gap:20px">
+      <a href="#/" style="display:flex;align-items:center;gap:14px;color:#fff">
+        <img src="assets/logo-mark.jpg" alt="" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid #E3B23C">
+        <span style="display:flex;flex-direction:column;line-height:1">
+          <b style="font-family:'Big Shoulders Display';font-weight:900;font-size:27px;letter-spacing:.08em">GIBS</b>
+          <small style="font-size:11.5px;letter-spacing:.06em;color:#C9D3E3;margin-top:4px">PT Global Indo Buana Sentosa</small>
+        </span>
+      </a>
+      <nav style="display:{{ navDisplay }};gap:2px;align-items:center">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+          <a href="{{ n.href }}" style="position:relative;color:#fff;font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:14px 16px" style-hover="color:#E3B23C">{{ n.label }}<i style="position:absolute;left:16px;right:16px;bottom:6px;height:2px;background:#E3B23C;transform:scaleX({{ n.bar }});transform-origin:left;transition:transform .3s"></i></a>
+        </sc-for>
+      </nav>
+      <div style="display:flex;align-items:center;gap:10px">
+        <a href="#/penawaran" style="display:inline-flex;align-items:center;gap:12px;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:13.5px;letter-spacing:.06em;text-transform:uppercase;height:48px;padding:0 18px;transition:background .25s,color .25s" style-hover="background:#fff;color:#0A1A33"><span style="display:{{ cartLabelDisplay }}">Daftar penawaran</span><b data-cartn="" style="background:#0A1A33;color:#E3B23C;min-width:26px;height:26px;border-radius:13px;display:grid;place-items:center;font-size:12.5px;padding:0 7px">{{ cartN }}</b></a>
+        <button onClick="{{ toggleMenu }}" aria-label="Menu" style="display:{{ burgerDisplay }};width:48px;height:48px;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;align-items:center;justify-content:center;cursor:pointer;font-size:19px">{{ burgerIcon }}</button>
+      </div>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#0A1A33;padding:4px clamp(16px,4vw,48px) 24px;display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.08)">
+        <sc-for list="{{ navItemsMobile }}" as="n" hint-placeholder-count="6">
+          <a href="{{ n.href }}" style="color:#fff;font-family:'Big Shoulders Display';font-weight:800;font-size:28px;text-transform:uppercase;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.1)">{{ n.label }}</a>
+        </sc-for>
+      </div>
+    </sc-if>
+  </header>
+
+  <main>
+  <!-- ================= BERANDA ================= -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <section onMouseEnter="{{ heroPause }}" onMouseLeave="{{ heroResume }}" onTouchStart="{{ heroTouchStart }}" onTouchEnd="{{ heroTouchEnd }}" style="position:relative;height:100svh;min-height:640px;max-height:980px;background:#0A1A33;color:#fff;overflow:hidden">
+      <sc-for list="{{ slides }}" as="s" hint-placeholder-count="1">
+        <div aria-hidden="{{ s.hidden }}" style="position:absolute;inset:0;opacity:{{ s.op }};visibility:{{ s.vis }};transition:opacity 1.1s ease,visibility 1.1s">
+          <div style="position:absolute;inset:0;overflow:hidden;background:#123A75"><img src="{{ s.img }}" alt="" style="width:100%;height:100%;object-fit:cover;transform:scale({{ s.scale }});transition:transform 7.5s cubic-bezier(.2,.6,.3,1)"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,26,51,.93) 0%,rgba(10,26,51,.74) 45%,rgba(10,26,51,.25) 100%)"></div>
+          <div style="position:relative;height:100%;max-width:1320px;margin:0 auto;padding:150px clamp(16px,4vw,48px) 130px;display:flex;flex-direction:column;justify-content:center">
+            <span style="display:flex;align-items:center;gap:12px;color:#E3B23C;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;opacity:{{ s.op }};transform:translateY({{ s.ty }});transition:opacity .8s ease .2s,transform .8s ease .2s"><i style="display:block;width:10px;height:10px;background:#E3B23C"></i>{{ s.label }}</span>
+            <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(50px,7.4vw,112px);line-height:.88;max-width:13ch;margin:22px 0 26px;text-wrap:balance;opacity:{{ s.op }};transform:translateY({{ s.ty }});transition:opacity .9s ease .32s,transform .9s ease .32s">{{ s.title }}</h2>
+            <p style="font-size:18px;line-height:1.6;color:#C9D3E3;max-width:46ch;margin-bottom:36px;opacity:{{ s.op }};transform:translateY({{ s.ty }});transition:opacity .9s ease .44s,transform .9s ease .44s">{{ s.desc }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;opacity:{{ s.op }};transform:translateY({{ s.ty }});transition:opacity .9s ease .56s,transform .9s ease .56s">
+              <a href="{{ s.href }}" style="display:inline-flex;align-items:center;gap:10px;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;height:56px;padding:0 28px;transition:background .25s" style-hover="background:#fff;color:#0A1A33">{{ s.cta }} →</a>
+              <sc-if value="{{ s.hasCta2 }}" hint-placeholder-val="{{ false }}"><a href="#/area" style="display:inline-flex;align-items:center;color:#fff;border:1.5px solid rgba(255,255,255,.55);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;height:56px;padding:0 28px;transition:all .25s" style-hover="background:#fff;color:#0A1A33;border-color:#fff">Cek area gratis kirim</a></sc-if>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+      <div style="position:absolute;z-index:3;left:0;right:0;bottom:0">
+        <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px) 34px;display:flex;justify-content:flex-end;gap:10px">
+          <sc-for list="{{ slides }}" as="s" hint-placeholder-count="3">
+            <button onClick="{{ s.go }}" aria-label="{{ s.aria }}" style="background:none;border:0;padding:14px 0;width:84px;display:flex;flex-direction:column;gap:10px;color:{{ s.numColor }};cursor:pointer;text-align:left">
+              <span style="font-family:'Big Shoulders Display';font-weight:800;font-size:18px;letter-spacing:.06em;transition:color .3s">{{ s.no }}</span>
+              <i style="display:block;height:2px;width:100%;background:rgba(255,255,255,.22);overflow:hidden"><i data-bar="{{ s.i }}" style="display:block;height:100%;width:100%;background:#E3B23C;transform:scaleX(0);transform-origin:left"></i></i>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:clamp(90px,11vw,140px) 0;background:#fff;position:relative;overflow:hidden">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px)">
+        <div style="position:relative;margin-bottom:60px">
+          <span aria-hidden="true" style="display:{{ ghost }};position:absolute;left:-.04em;top:50%;transform:translateY(-55%);font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(90px,16vw,230px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(10,26,51,.07);white-space:nowrap;pointer-events:none">Layanan</span>
+          <div data-reveal="" style="position:relative">
+            <span style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9C7314"><i style="display:block;width:10px;height:10px;background:#E3B23C"></i>Layanan GIBS</span>
+            <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(42px,6vw,80px);line-height:.9;margin-top:16px;max-width:17ch;text-wrap:balance">Material sampai di lokasi, tanpa ongkos kirim</h2>
+          </div>
+        </div>
+        <div data-stagger="" style="display:grid;gap:2px;background:#E4E7EC;grid-template-columns:{{ svcCols }}">
+          <article data-zoom="" style="position:relative;min-height:460px;color:#fff;display:flex;align-items:flex-end;overflow:hidden;background:#0A1A33;grid-row:{{ svcBigRow }}">
+            <div style="position:absolute;inset:0;overflow:hidden"><img data-zoom-img="" src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&amp;fit=crop&amp;w=1100&amp;q=75" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,51,.05) 25%,rgba(10,26,51,.94) 100%)"></div>
+            <div style="position:relative;padding:36px 34px">
+              <span style="font-family:'Big Shoulders Display';font-weight:800;font-size:18px;color:#E3B23C;letter-spacing:.08em">01</span>
+              <h3 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:46px;line-height:.92;margin:8px 0 12px">Kirim setiap hari</h3>
+              <p style="color:#D3DDEC;font-size:15.5px;max-width:40ch">Truk GIBS berangkat setiap hari kerja ke Mataram dan seluruh kabupaten di Lombok.</p>
+            </div>
+          </article>
+          <sc-for list="{{ services }}" as="s" hint-placeholder-count="3">
+            <article style="position:relative;background:#fff;padding:42px 34px 38px;transition:background .35s,color .35s;grid-column:{{ s.col }}" style-hover="background:#0A1A33;color:#fff">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px">
+                <svg viewBox="0 0 54 54" width="52" height="52" fill="none" stroke="#E3B23C" stroke-width="1.6"><path d="{{ s.p1 }}"></path><path d="{{ s.p2 }}"></path></svg>
+                <span style="font-family:'Big Shoulders Display';font-weight:800;font-size:18px;color:#9C7314;letter-spacing:.08em">{{ s.no }}</span>
+              </div>
+              <h3 style="font-family:'Big Shoulders Display';font-weight:800;font-size:30px;text-transform:uppercase;line-height:1;margin-bottom:12px">{{ s.title }}</h3>
+              <p style="color:#6B7686;font-size:15.5px;max-width:52ch">{{ s.desc }}</p>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:clamp(90px,11vw,140px) 0;background:#F3F4F6">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(50px,7vw,96px);align-items:center">
+        <div data-reveal="" style="position:relative;padding:0 28px 28px 0">
+          <div style="position:absolute;right:0;bottom:0;width:72%;height:72%;background:#E3B23C"></div>
+          <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#123A75"><img data-parallax="" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&amp;fit=crop&amp;w=1000&amp;q=75" alt="Gambar kerja proyek" style="width:100%;height:114%;margin-top:-7%;object-fit:cover"></div>
+          <div style="position:absolute;left:0;bottom:64px;background:#0A1A33;color:#fff;padding:22px 26px;max-width:250px">
+            <b style="display:block;font-family:'Big Shoulders Display';font-weight:900;font-size:48px;line-height:.9;color:#E3B23C">1 daftar</b>
+            <span style="font-size:14px;color:#C9D3E3">untuk semua material proyek Anda</span>
+          </div>
+        </div>
+        <div>
+          <div data-reveal="">
+            <span style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9C7314"><i style="display:block;width:10px;height:10px;background:#E3B23C"></i>Cara pesan</span>
+            <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(42px,5.6vw,76px);line-height:.9;margin:16px 0 18px;text-wrap:balance">Satu daftar untuk semua material proyek</h2>
+            <p style="font-size:18px;color:#4E5A6B;max-width:50ch">Untuk kontraktor, toko bangunan, dan keluarga yang sedang membangun rumah.</p>
+          </div>
+          <ol data-stagger="" style="list-style:none;margin-top:36px;border-bottom:1px solid #D9DDE3">
+            <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+              <li style="display:grid;grid-template-columns:64px 1fr;gap:18px;padding:22px 0;border-top:1px solid #D9DDE3">
+                <span style="font-family:'Big Shoulders Display';font-weight:900;font-size:42px;line-height:.9;color:#E3B23C">{{ st.no }}</span>
+                <div><b style="display:block;font-size:18px;margin-bottom:2px">{{ st.title }}</b><span style="color:#4E5A6B;font-size:15.5px">{{ st.desc }}</span></div>
+              </li>
+            </sc-for>
+          </ol>
+          <a href="#/produk" data-reveal="" style="display:inline-flex;align-items:center;gap:10px;margin-top:34px;background:#0A1A33;color:#fff;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;height:56px;padding:0 28px;transition:background .25s" style-hover="background:#1B4F9C;color:#fff">Susun daftar kebutuhan →</a>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:clamp(90px,11vw,140px) 0;background:#fff;position:relative;overflow:hidden">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px)">
+        <div style="position:relative;margin-bottom:56px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
+          <span aria-hidden="true" style="display:{{ ghost }};position:absolute;left:-.04em;top:50%;transform:translateY(-55%);font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(90px,16vw,230px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(10,26,51,.07);white-space:nowrap;pointer-events:none">Material</span>
+          <div data-reveal="" style="position:relative">
+            <span style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9C7314"><i style="display:block;width:10px;height:10px;background:#E3B23C"></i>Katalog</span>
+            <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(42px,6vw,80px);line-height:.9;margin-top:16px">Material yang kami sediakan</h2>
+          </div>
+          <a href="#/produk" data-reveal="" style="position:relative;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;border-bottom:2px solid #E3B23C;padding-bottom:4px">Lihat semua produk →</a>
+        </div>
+        <div data-stagger="" style="display:grid;gap:20px;grid-template-columns:{{ matCols }}">
+          <sc-for list="{{ categories }}" as="c" hint-placeholder-count="5">
+            <a href="{{ c.href }}" data-zoom="" style="position:relative;display:block;color:#fff;min-height:{{ c.minH }};overflow:hidden;background:#0A1A33;grid-row:{{ c.row }}">
+              <div style="position:absolute;inset:0;overflow:hidden"><img data-zoom-img="" src="{{ c.img }}" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,26,51,0) 30%,rgba(10,26,51,.92) 100%)"></div>
+              <span style="position:absolute;top:22px;left:24px;background:#E3B23C;color:#0A1A33;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px">{{ c.count }}</span>
+              <div style="position:absolute;left:0;right:0;bottom:0;padding:28px">
+                <h3 style="font-family:'Big Shoulders Display';font-weight:900;font-size:clamp(34px,3.4vw,46px);text-transform:uppercase;line-height:.92">{{ c.name }}</h3>
+                <p style="font-size:15px;color:#D3DDEC;margin-top:10px;max-width:40ch">{{ c.desc }}</p>
+                <span style="display:inline-block;margin-top:14px;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#E3B23C">Lihat produk →</span>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:clamp(90px,11vw,140px) 0;background:#0A1A33;color:#fff;position:relative;overflow:hidden">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(50px,7vw,96px);align-items:center">
+        <div data-reveal="" style="order:{{ rucikaTextOrder }}">
+          <span style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#E3B23C"><i style="display:block;width:10px;height:10px;background:#E3B23C"></i>Distributor resmi</span>
+          <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(42px,5.6vw,76px);line-height:.9;margin:16px 0 22px;text-wrap:balance">Pipa Rucika, langsung dari distributornya</h2>
+          <p style="font-size:17.5px;color:#AAB7CB;max-width:54ch">Ukuran yang sering dicari tukang ada di gudang Mataram. Untuk ukuran besar atau jumlah proyek, sales kami cek stoknya dan menjadwalkan pengiriman.</p>
+          <p style="font-size:17.5px;color:#AAB7CB;max-width:54ch;margin-top:14px">Selain Rucika, kami juga menjual kran Kranz, sekrup Dovi, paku Super Q, dan kawat bendrat Naga Huaxin.</p>
+          <a href="#/produk?k=pipa" style="display:inline-flex;align-items:center;gap:10px;margin-top:34px;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;height:56px;padding:0 28px;transition:background .25s" style-hover="background:#fff;color:#0A1A33">Lihat pipa dan fitting →</a>
+        </div>
+        <div data-reveal="" style="position:relative;padding:0 28px 28px 0;order:{{ rucikaImgOrder }}">
+          <div style="position:absolute;right:0;bottom:0;width:72%;height:72%;background:#1B4F9C"></div>
+          <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#123A75"><img data-parallax="" src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&amp;fit=crop&amp;w=1000&amp;q=75" alt="Pipa dan fitting" style="width:100%;height:114%;margin-top:-7%;object-fit:cover"></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="position:relative;color:#fff;padding:clamp(100px,11vw,140px) 0;overflow:hidden;background:#0A1A33" aria-label="GIBS dalam angka">
+      <div style="position:absolute;inset:0;overflow:hidden"><img data-parallax="" src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&amp;fit=crop&amp;w=1900&amp;q=75" alt="" style="width:100%;height:114%;margin-top:-7%;object-fit:cover"></div>
+      <div style="position:absolute;inset:0;background:rgba(18,58,117,.88)"></div>
+      <div data-stagger="" style="position:relative;max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:44px 24px">
+        <sc-for list="{{ stats }}" as="k" hint-placeholder-count="4">
+          <div style="border-top:2px solid #E3B23C;padding-top:22px">
+            <b style="display:block;font-family:'Big Shoulders Display';font-weight:900;font-size:clamp(60px,7.4vw,104px);line-height:.85;color:#E3B23C">{{ k.pre }}<span data-count="{{ k.n }}">{{ k.shown }}</span>{{ k.suf }}</b>
+            <span style="display:block;margin-top:12px;font-size:16px;color:#DCE4F0;max-width:24ch">{{ k.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="padding:clamp(90px,11vw,140px) 0;background:#fff;position:relative;overflow:hidden">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px)">
+        <div style="position:relative;margin-bottom:56px">
+          <span aria-hidden="true" style="display:{{ ghost }};position:absolute;left:-.04em;top:50%;transform:translateY(-55%);font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(90px,16vw,230px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(10,26,51,.07);white-space:nowrap;pointer-events:none">Edukasi</span>
+          <div data-reveal="" style="position:relative">
+            <span style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9C7314"><i style="display:block;width:10px;height:10px;background:#E3B23C"></i>Dari seri Sales Jelasin</span>
+            <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(42px,6vw,80px);line-height:.9;margin-top:16px">Sebelum Anda belanja material</h2>
+          </div>
+        </div>
+        <div data-stagger="" style="display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))">
+          <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+            <button type="button" onClick="{{ p.open }}" data-zoom="" style="display:flex;flex-direction:column;background:none;border:0;text-align:left;cursor:pointer;color:#0A1A33">
+              <div style="aspect-ratio:4/3;overflow:hidden;background:#123A75;position:relative;width:100%;margin-bottom:22px">
+                <img data-zoom-img="" src="{{ p.img }}" alt="" style="width:100%;height:100%;object-fit:cover">
+                <span style="position:absolute;left:0;bottom:0;background:#E3B23C;color:#0A1A33;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px">Draf artikel</span>
+              </div>
+              <h3 style="font-family:'Big Shoulders Display';font-weight:800;font-size:30px;line-height:1;text-transform:uppercase;margin-bottom:10px">{{ p.title }}</h3>
+              <p style="color:#4E5A6B;font-size:15.5px">{{ p.ex }}</p>
+              <span style="margin-top:16px;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;border-bottom:2px solid #E3B23C;padding-bottom:3px">Baca</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section style="background:#E3B23C;color:#0A1A33;padding:64px 0">
+      <div data-reveal="" style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:center">
+        <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(40px,5.2vw,70px);line-height:.9;max-width:16ch">Sedang menghitung material proyek?</h2>
+        <a href="#/produk" style="display:inline-flex;align-items:center;gap:10px;background:#0A1A33;color:#fff;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;height:58px;padding:0 30px;transition:background .25s" style-hover="background:#1B4F9C;color:#fff">Susun daftar kebutuhan →</a>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- ================= PAGE HEAD (inner pages) ================= -->
+  <sc-if value="{{ isInner }}" hint-placeholder-val="{{ false }}">
+    <section style="position:relative;color:#fff;padding:clamp(180px,20vw,230px) 0 clamp(70px,8vw,100px);background:#0A1A33;overflow:hidden">
+      <div style="position:absolute;inset:0;overflow:hidden"><img data-parallax="" src="{{ page.img }}" alt="" style="width:100%;height:114%;margin-top:-7%;object-fit:cover"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,26,51,.95),rgba(10,26,51,.62))"></div>
+      <div style="position:relative;max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px)">
+        <div style="overflow:hidden"><h1 data-ph="" style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(58px,9vw,132px);line-height:.88">{{ page.title }}</h1></div>
+        <div data-reveal="" style="display:flex;gap:10px;align-items:center;font-size:14px;color:#AAB7CB;margin-top:20px"><a href="#/" style="color:#E3B23C" style-hover="color:#fff">Beranda</a><i style="display:block;width:6px;height:6px;background:#E3B23C"></i><span>{{ page.title }}</span></div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- ================= PRODUK ================= -->
+  <sc-if value="{{ isProduk }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:60px 0 clamp(90px,10vw,130px);background:#F3F4F6">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px)">
+        <p data-reveal="" style="font-size:18px;color:#4E5A6B;max-width:60ch;margin-bottom:28px">Harga mengikuti pasar dan diberikan lewat penawaran. Tambahkan produk ke daftar, lalu kirim sekaligus.</p>
+        <label data-reveal="" style="display:flex;align-items:center;gap:12px;border:1.5px solid #D9DDE3;background:#fff;padding:0 18px;min-height:56px;margin-bottom:14px">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#6B7686" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+          <input type="search" value="{{ q }}" onChange="{{ onQ }}" placeholder="Cari besi 10, pipa, triplek…" aria-label="Cari produk" style="border:0;outline:0;width:100%;background:none;min-height:52px;font-size:16px">
+        </label>
+        <div data-reveal="" role="group" aria-label="Filter kategori" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="6">
+            <button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="border:1.5px solid {{ c.border }};background:{{ c.bg }};color:{{ c.fg }};padding:0 20px;min-height:46px;font-weight:600;font-size:14.5px;cursor:pointer;transition:all .2s">{{ c.name }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ noProducts }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:52px 24px;text-align:center;color:#4E5A6B;border:1.5px dashed #C9CFD8;background:#fff"><b style="display:block;color:#0A1A33;font-size:18px;margin-bottom:6px">Produk tidak ditemukan</b>Coba kata lain, atau tulis kebutuhan Anda di catatan saat mengirim daftar penawaran.</div>
+        </sc-if>
+        <div data-reveal="" aria-live="polite" style="display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))">
+          <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+            <article data-zoom="" style="background:#fff;display:flex;flex-direction:column;border:1px solid #E1E4EA;transition:border-color .25s,box-shadow .25s" style-hover="border-color:#0A1A33;box-shadow:0 18px 40px -24px rgba(10,26,51,.35)">
+              <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:#123A75">
+                <img data-zoom-img="" src="{{ p.img }}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+                <span style="position:absolute;left:0;top:0;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:12.5px;letter-spacing:.06em;padding:7px 13px">{{ p.brand }}</span>
+              </div>
+              <div style="padding:22px 22px 16px;flex:1;display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9C7314">{{ p.cat }}</span>
+                <h3 style="font-size:19px;line-height:1.3;font-weight:700">{{ p.name }}</h3>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:14px;color:#6B7686"><span style="white-space:nowrap">Per {{ p.unit }}</span><span style="font-size:12.5px;font-weight:700;padding:3px 11px;border-radius:20px;background:{{ p.pillBg }};color:{{ p.pillFg }}">{{ p.stockLabel }}</span></div>
+                <sc-if value="{{ p.hasNote }}" hint-placeholder-val="{{ false }}"><p style="font-size:14px;color:#6B7686">{{ p.note }}</p></sc-if>
+              </div>
+              <div style="display:flex;gap:10px;padding:0 22px 22px">
+                <div style="display:flex;border:1.5px solid #D9DDE3">
+                  <button type="button" onClick="{{ p.dec }}" aria-label="Kurangi jumlah" style="width:42px;min-height:50px;border:0;background:#F3F4F6;font-size:20px;font-weight:600;cursor:pointer" style-hover="background:#E4E7EC">−</button>
+                  <input value="{{ p.qty }}" onChange="{{ p.onQty }}" inputmode="numeric" aria-label="Jumlah" style="width:56px;border:0;text-align:center;font-weight:700;outline:0;background:#fff">
+                  <button type="button" onClick="{{ p.inc }}" aria-label="Tambah jumlah" style="width:42px;min-height:50px;border:0;background:#F3F4F6;font-size:20px;font-weight:600;cursor:pointer" style-hover="background:#E4E7EC">+</button>
+                </div>
+                <button type="button" onClick="{{ p.add }}" style="flex:1;min-height:53px;padding:0 14px;border:0;background:{{ p.btnBg }};color:{{ p.btnFg }};font-weight:700;font-size:14px;letter-spacing:.03em;cursor:pointer;transition:background .25s,color .25s" style-hover="background:#1B4F9C;color:#fff">{{ p.btnLabel }}</button>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- ================= PENAWARAN ================= -->
+  <sc-if value="{{ isPenawaran }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:60px 0 clamp(90px,10vw,130px);background:#F3F4F6">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:grid;gap:28px;align-items:start;grid-template-columns:{{ rfqCols }}">
+        <div data-reveal="" style="background:#fff;border:1px solid #E1E4EA;padding:clamp(24px,3vw,36px);min-width:0">
+          <h3 style="font-family:'Big Shoulders Display';font-weight:900;font-size:34px;text-transform:uppercase;line-height:1;margin-bottom:22px;display:flex;align-items:center;gap:12px">Material <span style="background:#0A1A33;color:#E3B23C;font-size:16px;min-width:32px;height:32px;border-radius:16px;display:grid;place-items:center;padding:0 9px;font-family:Archivo">{{ cartN }}</span></h3>
+          <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:44px 24px;text-align:center;color:#4E5A6B;border:1.5px dashed #C9CFD8">
+              <b style="display:block;color:#0A1A33;font-size:18px;margin-bottom:6px">Daftar Anda masih kosong</b>Pilih material di katalog, lalu kembali ke sini untuk mengirimnya.
+              <div style="margin-top:18px"><a href="#/produk" style="display:inline-flex;align-items:center;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:14px;height:46px;padding:0 20px" style-hover="background:#0A1A33;color:#E3B23C">Buka katalog</a></div>
+            </div>
+          </sc-if>
+          <sc-for list="{{ lines }}" as="l" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:68px minmax(0,1fr);gap:16px;padding:20px 0;border-top:1px solid #E1E4EA">
+              <div style="width:68px;height:68px;overflow:hidden;background:#123A75"><img src="{{ l.img }}" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+              <div style="min-width:0">
+                <b style="display:block;line-height:1.3">{{ l.name }}</b><small style="color:#6B7686;font-size:13.5px">{{ l.brand }}, per {{ l.unit }}</small>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px">
+                  <div style="display:flex;border:1.5px solid #D9DDE3">
+                    <button type="button" onClick="{{ l.dec }}" aria-label="Kurangi" style="width:38px;min-height:42px;border:0;background:#F3F4F6;font-size:19px;cursor:pointer">−</button>
+                    <input value="{{ l.qty }}" onChange="{{ l.onQty }}" inputmode="numeric" aria-label="Jumlah" style="width:54px;border:0;text-align:center;font-weight:700;outline:0">
+                    <button type="button" onClick="{{ l.inc }}" aria-label="Tambah" style="width:38px;min-height:42px;border:0;background:#F3F4F6;font-size:19px;cursor:pointer">+</button>
+                  </div>
+                  <input value="{{ l.note }}" onChange="{{ l.onNote }}" maxlength="120" placeholder="Ukuran atau tipe (opsional)" aria-label="Catatan item" style="flex:1 1 180px;border:1.5px solid #D9DDE3;padding:0 12px;min-height:45px;font-size:15px;outline:0">
+                  <button type="button" onClick="{{ l.rm }}" style="background:none;border:0;color:#B3261E;font-weight:600;font-size:14px;text-decoration:underline;padding:8px 0;cursor:pointer">Hapus</button>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+          <a href="#/produk" style="display:inline-block;margin-top:22px;font-weight:700;border-bottom:2px solid #E3B23C;padding-bottom:2px">Tambah produk lain</a>
+        </div>
+
+        <form onSubmit="{{ submit }}" noValidate="" data-reveal="" style="background:#fff;border:1px solid #E1E4EA;padding:clamp(24px,3vw,36px);border-top:4px solid #E3B23C;min-width:0">
+          <h3 style="font-family:'Big Shoulders Display';font-weight:900;font-size:34px;text-transform:uppercase;line-height:1;margin-bottom:22px">Data pengiriman</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px">
+            <span style="font-size:14px;font-weight:600">Saya memesan sebagai</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ buyerTypes }}" as="b" hint-placeholder-count="3">
+                <button type="button" onClick="{{ b.pick }}" aria-pressed="{{ b.on }}" style="display:flex;align-items:center;gap:9px;border:1.5px solid {{ b.border }};background:{{ b.bg }};padding:0 15px;min-height:46px;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap"><i style="display:block;width:16px;height:16px;border-radius:50%;border:2px solid #0A1A33;background:{{ b.dot }};box-shadow:inset 0 0 0 2px #fff"></i>{{ b.name }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:grid;gap:0 16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))">
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Nama</label><input value="{{ f.name }}" onChange="{{ on.name }}" autocomplete="name" style="border:1.5px solid {{ err.nameB }};padding:12px 14px;min-height:50px;outline:0;background:#fff"><span style="color:#B3261E;font-size:13.5px;font-weight:600">{{ err.name }}</span></div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Nomor WhatsApp</label><input value="{{ f.whatsapp }}" onChange="{{ on.whatsapp }}" inputmode="tel" placeholder="08…" style="border:1.5px solid {{ err.waB }};padding:12px 14px;min-height:50px;outline:0;background:#fff"><span style="color:#B3261E;font-size:13.5px;font-weight:600">{{ err.whatsapp }}</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Perusahaan atau nama proyek <span style="font-weight:400;color:#6B7686">(opsional)</span></label><input value="{{ f.project }}" onChange="{{ on.project }}" maxlength="120" style="border:1.5px solid #D9DDE3;padding:12px 14px;min-height:50px;outline:0;background:#fff"></div>
+          <div style="display:grid;gap:0 16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))">
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Kabupaten/kota</label>
+              <select value="{{ f.regency }}" onChange="{{ on.regency }}" style="border:1.5px solid {{ err.regB }};padding:12px 14px;min-height:50px;outline:0;background:#fff"><option value="">Pilih…</option><sc-for list="{{ regencies }}" as="r" hint-placeholder-count="0"><option value="{{ r }}">{{ r }}</option></sc-for></select>
+              <span style="color:#B3261E;font-size:13.5px;font-weight:600">{{ err.regency }}</span></div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Kecamatan</label>
+              <select value="{{ f.district }}" onChange="{{ on.district }}" style="border:1.5px solid {{ err.disB }};padding:12px 14px;min-height:50px;outline:0;background:#fff"><option value="">{{ districtPh }}</option><sc-for list="{{ formDistricts }}" as="d" hint-placeholder-count="0"><option value="{{ d }}">{{ d }}</option></sc-for></select>
+              <span style="color:#B3261E;font-size:13.5px;font-weight:600">{{ err.district }}</span></div>
+          </div>
+          <sc-if value="{{ areaNote.show }}" hint-placeholder-val="{{ false }}">
+            <div role="status" style="padding:14px 16px;font-size:15px;font-weight:600;margin-bottom:16px;border-left:4px solid {{ areaNote.fg }};background:{{ areaNote.bg }};color:{{ areaNote.fg }}">{{ areaNote.text }}</div>
+          </sc-if>
+          <div style="display:grid;gap:0 16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))">
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Dibutuhkan tanggal <span style="font-weight:400;color:#6B7686">(opsional)</span></label><input type="date" value="{{ f.needed }}" onChange="{{ on.needed }}" style="border:1.5px solid #D9DDE3;padding:12px 14px;min-height:50px;outline:0;background:#fff"></div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Rencana pembayaran</label><select value="{{ f.payment }}" onChange="{{ on.payment }}" style="border:1.5px solid #D9DDE3;padding:12px 14px;min-height:50px;outline:0;background:#fff"><option>COD</option><option>Transfer</option><option>Diskusikan dengan sales</option></select></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Catatan untuk sales <span style="font-weight:400;color:#6B7686">(opsional)</span></label><textarea value="{{ f.note }}" onChange="{{ on.note }}" rows="3" maxlength="600" placeholder="Contoh: jalan masuk sempit, kirim bertahap dua kali" style="border:1.5px solid #D9DDE3;padding:12px 14px;outline:0;resize:vertical;background:#fff"></textarea></div>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">
+            <label style="display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.5;cursor:pointer">
+              <input type="checkbox" checked="{{ f.consent }}" onChange="{{ on.consent }}" style="width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:#0A1A33;cursor:pointer">
+              <span>Saya setuju PT Global Indo Buana Sentosa memproses nama, nomor WhatsApp, dan lokasi proyek saya untuk menyiapkan penawaran ini, sesuai <a href="#/privasi" style="font-weight:700;border-bottom:2px solid #E3B23C">Kebijakan Privasi</a>.</span>
+            </label>
+            <span style="color:#B3261E;font-size:13.5px;font-weight:600">{{ err.consent }}</span>
+          </div>
+          <div role="alert" style="color:#B3261E;font-weight:600;font-size:15px;margin-bottom:12px">{{ formErr }}</div>
+          <button type="submit" disabled="{{ sendDisabled }}" style="width:100%;min-height:58px;border:0;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;opacity:{{ sendOp }};transition:background .25s,color .25s" style-hover="background:#0A1A33;color:#E3B23C">{{ sendLabel }}</button>
+          <p style="font-size:14px;color:#6B7686;margin-top:14px">Data Anda hanya dipakai untuk memproses penawaran ini dan dianonimkan setelah 24 bulan.</p>
+        </form>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- ================= AREA ================= -->
+  <sc-if value="{{ isArea }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:clamp(90px,10vw,130px) 0;background:#0A1A33;color:#fff;position:relative;overflow:hidden">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,6vw,80px);align-items:start">
+        <div>
+          <div style="position:relative;margin-bottom:36px">
+            <span aria-hidden="true" style="display:{{ ghost }};position:absolute;left:-.04em;top:50%;transform:translateY(-55%);font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(90px,14vw,200px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.08);white-space:nowrap;pointer-events:none">Lombok</span>
+            <div data-reveal="" style="position:relative">
+              <span style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#E3B23C"><i style="display:block;width:10px;height:10px;background:#E3B23C"></i>Wilayah layanan</span>
+              <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(42px,5.6vw,76px);line-height:.9;margin-top:16px">Lima wilayah di Pulau Lombok</h2>
+            </div>
+          </div>
+          <div data-stagger="" style="display:grid;gap:10px">
+            <sc-for list="{{ areaList }}" as="a" hint-placeholder-count="6">
+              <button type="button" onClick="{{ a.pick }}" style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px;background:{{ a.bg }};border:0;border-left:4px solid {{ a.edge }};color:#fff;text-align:left;cursor:pointer;transition:background .25s" style-hover="background:#123A75">
+                <div style="flex:1;min-width:0"><h3 style="font-family:'Big Shoulders Display';font-weight:800;font-size:clamp(22px,2.2vw,28px);text-transform:uppercase;line-height:1.05">{{ a.name }}</h3><small style="display:block;margin-top:6px;color:#AAB7CB;font-size:14px">{{ a.sub }}</small></div>
+                <span style="font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:20px;white-space:nowrap;background:{{ a.pillBg }};color:{{ a.pillFg }}">{{ a.badge }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div data-reveal="" style="background:#fff;color:#0A1A33;padding:clamp(24px,3vw,36px);border-top:4px solid #E3B23C;position:sticky;top:110px">
+          <h3 style="font-family:'Big Shoulders Display';font-weight:900;font-size:36px;text-transform:uppercase;line-height:1;margin-bottom:22px">Cek lokasi proyek</h3>
+          <div style="display:grid;gap:0 16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))">
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Kabupaten/kota</label><select value="{{ aReg }}" onChange="{{ onAReg }}" style="border:1.5px solid #D9DDE3;padding:12px 14px;min-height:50px;outline:0;background:#fff"><option value="">Pilih…</option><sc-for list="{{ regencies }}" as="r" hint-placeholder-count="0"><option value="{{ r }}">{{ r }}</option></sc-for></select></div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px"><label style="font-size:14px;font-weight:600">Kecamatan</label><select value="{{ aDist }}" onChange="{{ onADist }}" style="border:1.5px solid #D9DDE3;padding:12px 14px;min-height:50px;outline:0;background:#fff"><option value="">{{ aDistPh }}</option><sc-for list="{{ aDistricts }}" as="d" hint-placeholder-count="0"><option value="{{ d }}">{{ d }}</option></sc-for></select></div>
+          </div>
+          <sc-if value="{{ aRes.show }}" hint-placeholder-val="{{ false }}">
+            <div role="status" style="margin-top:6px;padding:24px;background:#F3F4F6;border-left:4px solid {{ aRes.edge }}">
+              <h4 style="font-family:'Big Shoulders Display';font-weight:900;font-size:32px;text-transform:uppercase;line-height:1">{{ aRes.title }}</h4>
+              <p style="margin-top:8px;color:#4E5A6B">{{ aRes.sub }}</p>
+              <ul style="margin:12px 0 20px 18px;color:#4E5A6B">
+                <sc-for list="{{ aRes.points }}" as="pt" hint-placeholder-count="0"><li>{{ pt }}</li></sc-for>
+              </ul>
+              <a href="{{ aRes.href }}" style="display:inline-flex;align-items:center;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:14px;letter-spacing:.04em;height:50px;padding:0 22px" style-hover="background:#0A1A33;color:#E3B23C">{{ aRes.cta }}</a>
+            </div>
+          </sc-if>
+          <p style="font-size:14px;color:#6B7686;margin-top:16px">Minimum order dan estimasi waktu di halaman ini masih contoh, akan disesuaikan dengan kebijakan GIBS.</p>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- ================= TENTANG ================= -->
+  <sc-if value="{{ isTentang }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:clamp(90px,10vw,130px) 0;background:#fff;position:relative;overflow:hidden">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(50px,7vw,90px);align-items:center">
+        <div>
+          <div style="position:relative">
+            <span aria-hidden="true" style="display:{{ ghost }};position:absolute;left:-.04em;top:40%;transform:translateY(-55%);font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(90px,14vw,200px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(10,26,51,.07);white-space:nowrap;pointer-events:none">GIBS</span>
+            <div data-reveal="" style="position:relative">
+              <span style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9C7314"><i style="display:block;width:10px;height:10px;background:#E3B23C"></i>PT Global Indo Buana Sentosa</span>
+              <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(42px,5.6vw,76px);line-height:.9;margin:16px 0 20px;text-wrap:balance">Distributor bahan bangunan dari Mataram</h2>
+              <p style="font-size:18px;color:#4E5A6B;max-width:56ch">Kami melayani kebutuhan material di seluruh Pulau Lombok dari toko dan gudang di Cakranegara. GIBS adalah distributor resmi pipa Rucika di Lombok, dengan armada pengiriman sendiri.</p>
+              <p style="font-size:14px;color:#6B7686;margin-top:14px">Tahun berdiri, kapasitas gudang, jumlah armada, dan legalitas akan diisi dari data perusahaan.</p>
+            </div>
+          </div>
+          <div data-stagger="" style="display:grid;gap:28px;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));margin-top:40px">
+            <sc-for list="{{ values }}" as="v" hint-placeholder-count="3">
+              <div style="border-top:3px solid #E3B23C;padding-top:16px"><h4 style="font-family:'Big Shoulders Display';font-weight:800;font-size:27px;text-transform:uppercase;line-height:1;margin-bottom:8px">{{ v.t }}</h4><p style="color:#4E5A6B;font-size:15.5px">{{ v.d }}</p></div>
+            </sc-for>
+          </div>
+        </div>
+        <div data-stagger="" style="display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));aspect-ratio:1/1">
+          <div data-zoom="" style="grid-row:span 2;overflow:hidden;background:#123A75;position:relative"><img data-zoom-img="" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&amp;fit=crop&amp;w=800&amp;q=75" alt="" style="width:100%;height:100%;object-fit:cover"><span style="position:absolute;left:12px;bottom:12px;font-size:12px;color:#fff;background:rgba(10,26,51,.75);padding:4px 9px">Ganti: foto tim sales GIBS</span></div>
+          <div data-zoom="" style="overflow:hidden;background:#123A75;position:relative"><img data-zoom-img="" src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt="" style="width:100%;height:100%;object-fit:cover"><span style="position:absolute;left:12px;bottom:12px;font-size:12px;color:#fff;background:rgba(10,26,51,.75);padding:4px 9px">Ganti: foto gudang</span></div>
+          <div data-zoom="" style="overflow:hidden;background:#123A75;position:relative"><img data-zoom-img="" src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&amp;fit=crop&amp;w=600&amp;q=75" alt="" style="width:100%;height:100%;object-fit:cover"><span style="position:absolute;left:12px;bottom:12px;font-size:12px;color:#fff;background:rgba(10,26,51,.75);padding:4px 9px">Ganti: foto armada</span></div>
+        </div>
+      </div>
+    </section>
+    <section style="padding:clamp(90px,10vw,130px) 0;background:#F3F4F6">
+      <div style="max-width:900px;margin:0 auto;padding:0 clamp(16px,4vw,48px)">
+        <h2 data-reveal="" style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(42px,5.6vw,76px);line-height:.9;margin-bottom:40px">Pertanyaan sebelum memesan</h2>
+        <div data-stagger="">
+          <sc-for list="{{ faq }}" as="q" hint-placeholder-count="4">
+            <details style="border-bottom:1px solid #D9DDE3">
+              <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;font-weight:700;font-size:18px">{{ q.q }}<span data-plus="" style="flex-shrink:0;width:40px;height:40px;display:grid;place-items:center;background:#0A1A33;color:#E3B23C;font-family:'Big Shoulders Display';font-weight:900;font-size:28px;line-height:1;transition:transform .3s">+</span></summary>
+              <p style="padding:0 60px 26px 0;color:#4E5A6B">{{ q.a }}</p>
+            </details>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+    <section style="background:#E3B23C;color:#0A1A33;padding:64px 0">
+      <div data-reveal="" style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:center">
+        <h2 style="font-family:'Big Shoulders Display';font-weight:900;text-transform:uppercase;font-size:clamp(40px,5.2vw,70px);line-height:.9;max-width:16ch">Ingin bergabung dengan tim GIBS?</h2>
+        <a href="#/kontak" style="display:inline-flex;align-items:center;gap:10px;background:#0A1A33;color:#fff;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;height:58px;padding:0 30px" style-hover="background:#1B4F9C;color:#fff">Hubungi kami →</a>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- ================= KONTAK ================= -->
+  <sc-if value="{{ isKontak }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:clamp(90px,10vw,130px) 0;background:#fff">
+      <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px)">
+        <div data-stagger="" style="display:grid;gap:2px;background:#E4E7EC;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))">
+          <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="3">
+            <div style="background:#fff;padding:38px 34px;transition:background .35s,color .35s" style-hover="background:#0A1A33;color:#fff">
+              <svg viewBox="0 0 40 40" width="42" height="42" fill="none" stroke="#E3B23C" stroke-width="1.6" style="margin-bottom:22px"><path d="{{ c.p1 }}"></path><path d="{{ c.p2 }}"></path></svg>
+              <h3 style="font-family:'Big Shoulders Display';font-weight:800;font-size:28px;text-transform:uppercase;line-height:1;margin-bottom:10px">{{ c.t }}</h3>
+              <p style="color:#6B7686">{{ c.d }}</p>
+              <sc-if value="{{ c.link }}" hint-placeholder-val="{{ false }}"><a href="#/penawaran" style="display:inline-block;margin-top:14px;font-weight:700;border-bottom:2px solid #E3B23C;padding-bottom:2px;color:inherit">Kirim permintaan penawaran</a></sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div data-reveal="" style="margin-top:40px;aspect-ratio:16/7;min-height:320px;background:#E4E7EC;overflow:hidden">
+          <iframe title="Peta lokasi GIBS" src="https://maps.google.com/maps?q=Jl.%20Imam%20Bonjol%20No.%2039%20Cakranegara%20Mataram&amp;z=16&amp;output=embed" loading="lazy" style="width:100%;height:100%;border:0;filter:grayscale(.4) contrast(1.05)"></iframe>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- ================= PRIVASI ================= -->
+  <sc-if value="{{ isPrivasi }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:clamp(70px,8vw,110px) 0;background:#fff">
+      <div style="max-width:860px;margin:0 auto;padding:0 clamp(16px,4vw,48px)">
+        <p data-reveal="" style="font-size:18px;color:#4E5A6B;max-width:62ch">Pemberitahuan ini menjelaskan data pribadi apa yang dikumpulkan website GIBS, untuk apa, berapa lama disimpan, dan hak Anda sesuai Undang-Undang No. 27 Tahun 2022 tentang Pelindungan Data Pribadi.</p>
+        <p data-reveal="" style="font-size:14px;color:#6B7686;margin-top:10px">Versi {{ privacyVersion }}</p>
+        <div style="margin-top:36px">
+          <sc-for list="{{ privacy }}" as="s" hint-placeholder-count="8">
+            <div data-reveal="" style="border-top:1px solid #E1E4EA;padding:28px 0">
+              <h2 style="font-family:'Big Shoulders Display';font-weight:800;font-size:clamp(24px,2.6vw,30px);text-transform:uppercase;line-height:1.05;margin-bottom:10px">{{ s.h }}</h2>
+              <p style="color:#3E4652;max-width:68ch">{{ s.p }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+  </main>
+
+  <footer style="background:#0A1A33;color:#AAB7CB;padding:clamp(80px,9vw,110px) 0 0;font-size:15px">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px);display:grid;gap:44px;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))">
+      <div>
+        <a href="#/" style="display:flex;align-items:center;gap:14px;margin-bottom:20px;color:#fff">
+          <img src="assets/logo-mark.jpg" alt="" style="width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid #E3B23C">
+          <span style="display:flex;flex-direction:column;line-height:1.1"><b style="font-family:'Big Shoulders Display';font-weight:900;font-size:26px;letter-spacing:.08em">GIBS</b><small style="font-size:12px;color:#8C9AB0">Orghlaite Group</small></span>
+        </a>
+        <p style="max-width:34ch">Distributor bahan bangunan di Kota Mataram. Besi beton, pipa Rucika, triplek, Kranz, dan perlengkapan bangunan lainnya.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <h4 style="font-family:'Big Shoulders Display';font-weight:800;font-size:22px;color:#fff;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px">Produk</h4>
+        <sc-for list="{{ categories }}" as="c" hint-placeholder-count="5"><a href="{{ c.href }}" style="color:#D3DDEC" style-hover="color:#E3B23C">{{ c.name }}</a></sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <h4 style="font-family:'Big Shoulders Display';font-weight:800;font-size:22px;color:#fff;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px">Perusahaan</h4>
+        <a href="#/tentang" style="color:#D3DDEC" style-hover="color:#E3B23C">Tentang kami</a>
+        <a href="#/area" style="color:#D3DDEC" style-hover="color:#E3B23C">Area kirim</a>
+        <a href="#/kontak" style="color:#D3DDEC" style-hover="color:#E3B23C">Kontak</a>
+        <a href="#/penawaran" style="color:#D3DDEC" style-hover="color:#E3B23C">Daftar penawaran</a>
+        <a href="#/privasi" style="color:#D3DDEC" style-hover="color:#E3B23C">Kebijakan privasi</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <h4 style="font-family:'Big Shoulders Display';font-weight:800;font-size:22px;color:#fff;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">Kunjungi kami</h4>
+        <p>Jl. Imam Bonjol No. 39, Cakranegara, Kota Mataram</p>
+        <p>Senin–Sabtu, 09.00–17.00 WITA</p>
+      </div>
+    </div>
+    <div style="max-width:1320px;margin:70px auto 0;padding:24px clamp(16px,4vw,48px);border-top:1px solid rgba(255,255,255,.1);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font-size:13.5px;color:#8C9AB0">
+      <span>Prototype untuk presentasi. Produk, stok, dan syarat kirim adalah data contoh.</span><span>Foto ilustrasi: Unsplash</span>
+    </div>
+  </footer>
+
+  <sc-if value="{{ showSticky }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:0;right:0;bottom:0;z-index:40;background:#0A1A33;color:#fff;padding:12px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:3px solid #E3B23C">
+      <span style="font-size:15px"><b style="color:#E3B23C">{{ cartN }}</b> produk di daftar</span>
+      <a href="#/penawaran" style="display:inline-flex;align-items:center;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:14px;height:42px;padding:0 18px">Lihat daftar</a>
+    </div>
+  </sc-if>
+
+  <div style="display:{{ demoTag }};position:fixed;left:12px;bottom:12px;z-index:45;background:rgba(10,26,51,.92);color:#D3DDEC;font-size:12.5px;padding:7px 12px;border-left:3px solid #E3B23C;pointer-events:none">Prototype, data contoh</div>
+
+  <div role="status" style="position:fixed;left:50%;bottom:24px;z-index:120;background:#0A1A33;color:#fff;padding:14px 20px;font-weight:600;font-size:15px;border-left:4px solid #E3B23C;max-width:calc(100% - 32px);transform:translate(-50%,{{ toastY }});transition:transform .35s cubic-bezier(.2,.7,.2,1)">{{ toast }}</div>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ backdrop }}" data-modal="" role="dialog" aria-modal="true" style="position:fixed;inset:0;z-index:150;background:rgba(10,26,51,.78);display:flex;align-items:center;justify-content:center;padding:16px">
+      <div data-modal-box="" data-lenis-prevent="" style="background:#fff;max-width:660px;width:100%;max-height:92vh;overflow:auto">
+        <div style="background:#0A1A33;color:#fff;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;border-bottom:3px solid #E3B23C">
+          <h3 style="font-family:'Big Shoulders Display';font-weight:900;font-size:28px;text-transform:uppercase;line-height:1">{{ modal.title }}</h3>
+          <button type="button" onClick="{{ closeModal }}" aria-label="Tutup" style="background:none;border:0;color:#fff;width:44px;height:44px;font-size:28px;line-height:1;cursor:pointer">×</button>
+        </div>
+        <div style="padding:26px">
+          <sc-if value="{{ modal.isPost }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9C7314">Draf, menunggu review GIBS</span>
+            <p style="color:#3E4652;margin-top:12px">{{ modal.p1 }}</p>
+            <h4 style="font-family:'Big Shoulders Display';font-weight:800;font-size:24px;text-transform:uppercase;margin:20px 0 6px">{{ modal.h }}</h4>
+            <p style="color:#3E4652">{{ modal.p2 }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:22px"><a href="#/produk" onClick="{{ closeModal }}" style="display:inline-flex;align-items:center;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:14px;height:50px;padding:0 22px">Susun daftar kebutuhan</a></div>
+          </sc-if>
+          <sc-if value="{{ modal.isSent }}" hint-placeholder-val="{{ false }}">
+            <p style="font-size:14px;color:#6B7686">Nomor permintaan Anda</p>
+            <div style="font-family:'Big Shoulders Display';font-weight:900;font-size:clamp(36px,10vw,54px);line-height:1;color:#0A1A33;white-space:nowrap">{{ modal.ticket }}</div>
+            <p style="margin:14px 0 16px">Permintaan sudah masuk ke tim sales GIBS. Agar lebih cepat dibalas, kirim juga pesan ini lewat WhatsApp:</p>
+            <div style="background:#EEF7EA;border-left:4px solid #25A244;white-space:pre-wrap;font-size:14px;padding:16px;max-height:280px;overflow:auto;font-family:ui-monospace,Menlo,Consolas,monospace">{{ modal.msg }}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px">
+              <a href="{{ modal.waHref }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;background:#E3B23C;color:#0A1A33;font-weight:700;font-size:14px;height:50px;padding:0 22px" style-hover="background:#0A1A33;color:#E3B23C">Buka WhatsApp</a>
+              <button type="button" onClick="{{ copyMsg }}" style="background:#0A1A33;color:#fff;border:0;font-weight:700;font-size:14px;height:50px;padding:0 22px;cursor:pointer" style-hover="background:#1B4F9C">Salin pesan</button>
+              <button type="button" onClick="{{ printRfq }}" style="background:#fff;color:#0A1A33;border:2px solid #0A1A33;font-weight:700;font-size:14px;height:50px;padding:0 22px;cursor:pointer" style-hover="background:#F3F4F6">Unduh PDF</button>
+            </div>
+            <p style="font-size:13.5px;color:#6B7686;margin-top:14px">{{ modal.waNote }}</p>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;smoothScroll&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;heroAutoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;ghostWords&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Style&quot;}}">
+class Component extends DCLogic {
+  U = (id, w = 1000) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
+  IMG = { rebar: "1504307651254-35680f356dfd", site: "1541888946425-d81bb19240f5", worker: "1581094794329-c8112a89af12", plan: "1503387762-592deb58ef4e", tower: "1487958449943-2429e8be8625", truck: "1586528116311-ad8dd3c8310d", tools: "1621905251189-08b45d6a269e", brand: "1517089596392-fb9a9033e05b", office: "1486406146926-c627a92ad1ab", pipe: "1585704032915-c3400ca199e7", wood: "1530124566582-a618bc2615dc", bath: "1552321554-5fefe8c9ef14", nails: "1572981779307-38b8cabb2407", interior: "1600585154340-be6161a56a0c", plumb: "1607472586893-edb57bdc0e39" };
+  CATS = [
+    { id: "besi", name: "Besi beton", desc: "Besi polos dan ulir SNI, panjang 12 meter, untuk kolom, balok, dan pondasi.", img: "rebar" },
+    { id: "pipa", name: "Pipa & fitting", desc: "Pipa PVC dan fitting Rucika untuk instalasi air bersih dan pembuangan.", img: "pipe" },
+    { id: "kayu", name: "Triplek & kayu", desc: "Triplek meranti dan sengon untuk bekisting, plafon, dan furnitur.", img: "wood" },
+    { id: "sanitair", name: "Kran & sanitair", desc: "Kran dan aksesori kamar mandi Kranz untuk rumah maupun proyek.", img: "bath" },
+    { id: "pengikat", name: "Kawat, paku & sekrup", desc: "Kawat bendrat, paku, dan sekrup baja ringan dalam satuan dus atau roll.", img: "nails" }
+  ];
+  PRODUCTS = [
+    { id: "b1", cat: "besi", name: "Besi polos SNI 6 mm × 12 m", brand: "SNI", unit: "batang", stock: "ready", img: "rebar" },
+    { id: "b2", cat: "besi", name: "Besi polos HD 8 mm × 12 m SNI", brand: "SNI", unit: "batang", stock: "ready", img: "site" },
+    { id: "b3", cat: "besi", name: "Besi polos HD 10 mm × 12 m SNI", brand: "SNI", unit: "batang", stock: "ready", img: "rebar" },
+    { id: "b4", cat: "besi", name: "Besi beton 12 mm × 12 m", brand: "SNI", unit: "batang", stock: "tanya", img: "site", note: "Tanyakan ketersediaan ukuran ini." },
+    { id: "b5", cat: "besi", name: "Besi ulir, ukuran sesuai kebutuhan", brand: "SNI", unit: "batang", stock: "tanya", img: "rebar", note: "Tulis diameter di catatan." },
+    { id: "p1", cat: "pipa", name: "Pipa PVC Rucika", brand: "Rucika", unit: "batang", stock: "ready", img: "pipe", note: "Tulis jenis dan diameter di catatan." },
+    { id: "p2", cat: "pipa", name: "Fitting PVC Rucika: elbow, tee, sock", brand: "Rucika", unit: "pcs", stock: "ready", img: "plumb", note: "Tulis jenis dan ukuran di catatan." },
+    { id: "k1", cat: "kayu", name: "Triplek meranti", brand: "Meranti", unit: "lembar", stock: "ready", img: "wood", note: "Tulis ketebalan di catatan." },
+    { id: "k2", cat: "kayu", name: "Triplek sengon", brand: "Sengon", unit: "lembar", stock: "ready", img: "interior", note: "Tulis ketebalan di catatan." },
+    { id: "s1", cat: "sanitair", name: "Kran air Kranz", brand: "Kranz", unit: "pcs", stock: "ready", img: "bath", note: "Tulis tipe atau model di catatan." },
+    { id: "s2", cat: "sanitair", name: "Aksesori kamar mandi Kranz", brand: "Kranz", unit: "pcs", stock: "tanya", img: "interior" },
+    { id: "t1", cat: "pengikat", name: "Kawat bendrat Naga Huaxin 20 kg", brand: "Naga Huaxin", unit: "roll", stock: "ready", img: "tools" },
+    { id: "t2", cat: "pengikat", name: "Paku Super Q 2\"", brand: "Super Q", unit: "dus", stock: "ready", img: "nails", note: "Isi per dus dikonfirmasi sales." },
+    { id: "t3", cat: "pengikat", name: "Paku Super Q 3\", 30 kg", brand: "Super Q", unit: "dus", stock: "ready", img: "nails" },
+    { id: "t4", cat: "pengikat", name: "Paku Super Q 4\"", brand: "Super Q", unit: "dus", stock: "indent", img: "tools", note: "Isi per dus dikonfirmasi sales." },
+    { id: "t5", cat: "pengikat", name: "Sekrup drilling Dovi", brand: "Dovi", unit: "dus", stock: "ready", img: "brand", note: "Tulis ukuran di catatan." }
+  ];
+  AREAS = {
+    "Kota Mataram": { free: true, eta: "Hari yang sama", min: "Tanpa minimum", d: ["Ampenan","Cakranegara","Mataram","Sandubaya","Sekarbela","Selaparang"] },
+    "Lombok Barat": { free: true, eta: "H+0 sampai H+1", min: "Minimum order Rp 2 juta", d: ["Batu Layar","Gerung","Gunungsari","Kediri","Kuripan","Labuapi","Lembar","Lingsar","Narmada","Sekotong"] },
+    "Lombok Tengah": { free: true, eta: "H+1", min: "Minimum order Rp 3 juta", d: ["Batukliang","Batukliang Utara","Janapria","Jonggat","Kopang","Praya","Praya Barat","Praya Barat Daya","Praya Tengah","Praya Timur","Pringgarata","Pujut"] },
+    "Lombok Timur": { free: true, eta: "H+1", min: "Minimum order Rp 3 juta", d: ["Aikmel","Jerowaru","Keruak","Labuhan Haji","Masbagik","Montong Gading","Pringgabaya","Pringgasela","Sakra","Sakra Barat","Sakra Timur","Sambelia","Selong","Sembalun","Sikur","Suela","Sukamulia","Suralaga","Terara","Wanasaba"] },
+    "Lombok Utara": { free: true, eta: "H+1 sampai H+2", min: "Minimum order Rp 3 juta", d: ["Bayan","Gangga","Kayangan","Pemenang","Tanjung"] },
+    "Luar Pulau Lombok": { free: false, eta: "Dijadwalkan", min: "Ongkir dihitung sales", d: ["Sumbawa, Bima, Dompu","Lainnya"] }
+  };
+  POSTS = [
+    { img: "wood", title: "Meranti atau sengon untuk bekisting?", ex: "Dua triplek yang paling sering ditanyakan tukang. Bedanya ada di bobot, kekuatan, dan berapa kali bisa dipakai ulang.", p1: "Triplek meranti umumnya lebih padat dan tahan dipakai berulang untuk bekisting. Sengon lebih ringan dan lebih ekonomis untuk pekerjaan yang tidak menahan beban berat.", h: "Tanyakan ini ke sales", p2: "Ketebalan yang Anda butuhkan, berapa kali bekisting akan dipakai ulang, dan apakah triplek akan terkena air." },
+    { img: "site", title: "Besi beton: kecil bentuknya, besar perannya", ex: "Cara membaca ukuran besi polos dan ulir, dan kenapa label SNI penting untuk struktur.", p1: "Besi beton menahan tarikan pada kolom, balok, dan pondasi. Diameter dan jenisnya (polos atau ulir) ditentukan oleh perhitungan struktur, bukan selera.", h: "Sebelum memesan", p2: "Siapkan daftar diameter dan jumlah batang dari gambar kerja atau mandor Anda. Sales kami bantu cek ketersediaan setiap ukuran." },
+    { img: "plumb", title: "Memilih pipa untuk air bersih rumah", ex: "Jenis pipa, diameter, dan fitting yang biasa dipakai untuk instalasi air bersih rumah tinggal.", p1: "Instalasi air bersih dan pembuangan memakai jenis dan diameter pipa yang berbeda. Fitting harus sesuai dengan jenis pipanya.", h: "Agar tidak salah beli", p2: "Catat jumlah titik air, panjang jalur, dan diameter yang direncanakan tukang. Kirim di catatan item, sales kami cocokkan dengan stok Rucika." }
+  ];
+  PAGES = { produk: ["Produk", "rebar"], penawaran: ["Daftar penawaran", "plan"], area: ["Area kirim", "truck"], tentang: ["Tentang kami", "tower"], kontak: ["Kontak", "office"], privasi: ["Kebijakan privasi", "office"] };
+  STOCK = { ready: ["Ready", "#E2F2E8", "#1E7A46"], indent: ["Indent", "#FFF0D9", "#9A5B00"], tanya: ["Tanya sales", "#E3ECF8", "#1B4F9C"] };
+  EMPTY_FORM = { buyer: "Kontraktor", name: "", whatsapp: "", project: "", regency: "", district: "", needed: "", payment: "COD", note: "", consent: false };
+  // Harus sama dengan PRIVACY_VERSION di lib/rfq.js. Naikkan bila isi PRIVACY di bawah berubah.
+  PRIVACY_VERSION = "2026-10";
+  PRIVACY = [
+    { h: "Siapa pengendali data", p: "PT Global Indo Buana Sentosa (GIBS), Jl. Imam Bonjol No. 39, Cakranegara, Kota Mataram, NTB. Untuk pertanyaan atau permintaan terkait data pribadi, datang ke toko pada jam buka atau hubungi nomor WhatsApp order GIBS." },
+    { h: "Data yang kami kumpulkan", p: "Saat Anda mengirim permintaan penawaran: nama, nomor WhatsApp, jenis pemesan, nama perusahaan atau proyek (opsional), kabupaten dan kecamatan lokasi proyek, tanggal kebutuhan, rencana pembayaran, daftar produk, dan catatan. Server juga mencatat alamat IP dalam bentuk hash satu arah untuk keamanan. Daftar produk yang belum dikirim hanya tersimpan di browser Anda." },
+    { h: "Tujuan dan dasar pemrosesan", p: "Data dipakai hanya untuk menyiapkan penawaran harga, menghubungi Anda lewat WhatsApp, dan mengatur pengiriman. Dasar pemrosesannya adalah persetujuan yang Anda berikan di formulir dan langkah yang Anda minta sebelum terjadinya transaksi. Data tidak dijual dan tidak dipakai untuk iklan." },
+    { h: "Berapa lama disimpan", p: "Nama, nomor WhatsApp, nama proyek, dan catatan dianonimkan otomatis 24 bulan setelah permintaan dikirim. Setelah itu yang tersisa hanya produk, jumlah, dan wilayah, tanpa identitas, untuk statistik penjualan." },
+    { h: "Siapa yang bisa mengakses", p: "Hanya tim sales dan admin GIBS yang berwenang. Data disimpan di layanan database terkelola (Supabase atau Neon) yang servernya dapat berada di luar Indonesia, dengan enkripsi saat dikirim dan saat disimpan. Bila Anda memilih tombol WhatsApp, pesan dikirim lewat layanan WhatsApp. Peta di halaman Kontak dimuat dari Google Maps dan foto ilustrasi dari Unsplash." },
+    { h: "Hak Anda", p: "Anda berhak meminta salinan data Anda, memperbaiki data yang salah, meminta data dihapus atau dianonimkan, dan menarik persetujuan kapan saja. Permintaan diproses paling lambat 3 x 24 jam sejak identitas Anda terverifikasi lewat nomor WhatsApp yang sama dengan yang dipakai di formulir." },
+    { h: "Keamanan dan kebocoran data", p: "Koneksi dienkripsi (HTTPS), akses database dibatasi per peran, dan setiap perubahan data tercatat di log audit. Bila terjadi kegagalan pelindungan data yang menyangkut data Anda, kami memberi tahu Anda dan lembaga yang berwenang paling lambat 3 x 24 jam sesuai UU PDP." },
+    { h: "Perubahan kebijakan", p: "Bila kebijakan ini berubah, nomor versi di atas ikut berubah dan formulir akan meminta persetujuan ulang." }
+  ];
+
+  load(k, d) { try { const v = localStorage.getItem("gibsdc_" + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  save(k, v) { try { localStorage.setItem("gibsdc_" + k, JSON.stringify(v)); } catch (e) {} }
+
+  state = Object.assign({ slide: 0, menuOpen: false, scrolled: false, wide: typeof window === "undefined" ? true : window.innerWidth >= 1040,
+    activeCat: "all", q: "", qty: {}, cart: this.load("cart", []), form: Object.assign({}, this.EMPTY_FORM), errs: {}, formErr: "", sending: false, rfqKey: null,
+    aReg: "", aDist: "", toast: "", toastOn: false, modal: null }, this.parseHash());
+  rootRef = React.createRef();
+
+  parseHash() {
+    const h = (typeof location !== "undefined" ? location.hash : "") || "";
+    const m = h.replace(/^#\/?/, "").split("?");
+    const route = this.PAGES[m[0]] ? m[0] : "home";
+    const out = { route };
+    const k = new URLSearchParams(m[1] || "").get("k");
+    if (route === "produk") out.activeCat = k && this.CATS.some(c => c.id === k) ? k : "all";
+    return out;
+  }
+
+  componentDidMount() {
+    this._prev = Object.assign({}, this.state);
+    const root = this.rootRef.current;
+    this._onHash = () => { this.setState(Object.assign(this.parseHash(), { menuOpen: false })); };
+    this._onResize = () => { const w = window.innerWidth >= 1040; if (w !== this.state.wide) this.setState({ wide: w }); };
+    this._onScroll = () => { const s = window.scrollY > 60; if (s !== this.state.scrolled) this.setState({ scrolled: s }); };
+    this._onKey = e => { if (e.key === "Escape" && this.state.modal) this.closeModal(); };
+    window.addEventListener("hashchange", this._onHash);
+    window.addEventListener("resize", this._onResize);
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    document.addEventListener("keydown", this._onKey);
+    this._onResize(); this._onScroll();
+    // Versi lama menyimpan riwayat permintaan (nama, nomor WA) di browser. Hapus, sekarang tersimpan di server.
+    try { localStorage.removeItem("gibsdc_rfq"); localStorage.removeItem("gibsdc_seq"); } catch (e) {}
+    root.addEventListener("error", e => { if (e.target.tagName === "IMG") e.target.style.opacity = 0; }, true);
+    this._fallback = setTimeout(() => this.hideCurtain(), 4000);
+    let tries = 0;
+    const boot = () => { if (!window.gsap || !window.ScrollTrigger) { if (++tries < 80) this._bootT = setTimeout(boot, 60); else this.hideCurtain(); return; } this.init(); };
+    boot();
+  }
+
+  hideCurtain() { const c = this.rootRef.current && this.rootRef.current.querySelector("[data-curtain]"); if (c) c.style.display = "none"; }
+
+  init() {
+    const gsap = window.gsap, ST = window.ScrollTrigger, root = this.rootRef.current;
+    gsap.registerPlugin(ST);
+    this.reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (this.props.smoothScroll !== false && window.Lenis && !this.reduce) {
+      this.lenis = new window.Lenis({ lerp: 0.1 });
+      this.lenis.on("scroll", ST.update);
+      this._tick = t => this.lenis.raf(t * 1000);
+      gsap.ticker.add(this._tick);
+      gsap.ticker.lagSmoothing(0);
+    }
+    gsap.timeline({ onComplete: () => { clearTimeout(this._fallback); this.hideCurtain(); this.armSlide(); } })
+      .to(root.querySelector("[data-curtain-bar]"), { scaleX: 1, duration: 1, ease: "power2.inOut" })
+      .to(root.querySelectorAll("[data-curtain-logo]"), { opacity: 0, y: -10, duration: .35, ease: "power2.in" }, "+=.1")
+      .to(root.querySelector("[data-curtain]"), { yPercent: -100, duration: .9, ease: "power3.inOut" }, "-=.05");
+    // subtle hover zoom on media cards
+    const zoom = (e, s) => { const c = e.target.closest && e.target.closest("[data-zoom]"); if (!c || (e.relatedTarget && c.contains(e.relatedTarget))) return; const im = c.querySelector("[data-zoom-img]"); if (im) gsap.to(im, { scale: s, duration: .9, ease: "power2.out" }); };
+    root.addEventListener("mouseover", e => zoom(e, 1.05));
+    root.addEventListener("mouseout", e => zoom(e, 1));
+    this.setupView();
+    window.addEventListener("load", () => ST.refresh());
+  }
+
+  setupView() {
+    const gsap = window.gsap, ST = window.ScrollTrigger, root = this.rootRef.current;
+    if (!gsap || !ST) return;
+    if (this.vctx) this.vctx.revert();
+    if (this.reduce) return;
+    const ease = "power3.out";
+    this.vctx = gsap.context(() => {
+      gsap.utils.toArray("[data-ph]", root).forEach(el => gsap.from(el, { yPercent: 100, duration: 1, ease, delay: .1 }));
+      gsap.utils.toArray("[data-reveal]", root).forEach(el => gsap.from(el, { y: 28, opacity: 0, duration: .9, ease, scrollTrigger: { trigger: el, start: "top 90%", once: true } }));
+      gsap.utils.toArray("[data-stagger]", root).forEach(el => gsap.from(el.children, { y: 28, opacity: 0, duration: .8, stagger: .07, ease, scrollTrigger: { trigger: el, start: "top 88%", once: true } }));
+      gsap.utils.toArray("[data-parallax]", root).forEach(el => gsap.fromTo(el, { yPercent: -5 }, { yPercent: 5, ease: "none", scrollTrigger: { trigger: el.parentElement, start: "top bottom", end: "bottom top", scrub: true } }));
+      root.querySelectorAll("[data-count]").forEach(el => {
+        const n = +el.dataset.count; if (!n) return; const o = { v: 0 };
+        gsap.to(o, { v: n, duration: 1.8, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 90%", once: true }, onUpdate: () => { el.textContent = Math.round(o.v).toLocaleString("id-ID"); } });
+      });
+    }, root);
+    requestAnimationFrame(() => ST.refresh());
+  }
+
+  componentDidUpdate() {
+    // Runtime dc hanya mengirim prevProps, jadi state sebelumnya disimpan sendiri.
+    const ps = this._prev || this.state;
+    this._prev = Object.assign({}, this.state);
+    if (ps.route !== this.state.route) {
+      if (this.lenis) this.lenis.scrollTo(0, { immediate: true }); else window.scrollTo(0, 0);
+      this.setupView();
+      if (this.state.route === "home") this.armSlide(); else this.killSlide();
+    }
+    if (ps.cart.length < this.state.cart.length && window.gsap) {
+      const b = this.rootRef.current.querySelector("[data-cartn]");
+      if (b) window.gsap.fromTo(b, { scale: 1.45 }, { scale: 1, duration: .5, ease: "back.out(3)" });
+    }
+    if (!ps.modal && this.state.modal && window.gsap) {
+      const r = this.rootRef.current;
+      window.gsap.from(r.querySelector("[data-modal]"), { opacity: 0, duration: .25 });
+      window.gsap.from(r.querySelector("[data-modal-box]"), { y: 24, opacity: 0, duration: .4, ease: "power3.out" });
+      if (this.lenis) this.lenis.stop();
+    }
+    if (ps.modal && !this.state.modal && this.lenis) this.lenis.start();
+  }
+
+  killSlide() { if (this.barTw) { this.barTw.kill(); this.barTw = null; } }
+  armSlide() {
+    this.killSlide();
+    const gsap = window.gsap, root = this.rootRef.current;
+    if (!gsap || this.state.route !== "home") return;
+    requestAnimationFrame(() => {
+      const bars = root.querySelectorAll("[data-bar]");
+      bars.forEach(b => gsap.set(b, { scaleX: 0 }));
+      const bar = root.querySelector(`[data-bar="${this.state.slide}"]`);
+      if (!bar) return;
+      if (this.props.heroAutoplay === false || this.reduce) { gsap.set(bar, { scaleX: 1 }); return; }
+      this.barTw = gsap.to(bar, { scaleX: 1, duration: 7, ease: "none", onComplete: () => this.goSlide(this.state.slide + 1) });
+      if (this.paused) this.barTw.pause();
+    });
+  }
+  goSlide(n) { this.setState({ slide: (n + 3) % 3 }, () => this.armSlide()); }
+
+  componentWillUnmount() {
+    window.removeEventListener("hashchange", this._onHash);
+    window.removeEventListener("resize", this._onResize);
+    window.removeEventListener("scroll", this._onScroll);
+    document.removeEventListener("keydown", this._onKey);
+    clearTimeout(this._bootT); clearTimeout(this._fallback); clearTimeout(this._toastT);
+    this.killSlide();
+    if (this.vctx) this.vctx.revert();
+    if (this.lenis) { window.gsap.ticker.remove(this._tick); this.lenis.destroy(); }
+  }
+
+  showToast(t) { clearTimeout(this._toastT); this.setState({ toast: t, toastOn: true }); this._toastT = setTimeout(() => this.setState({ toastOn: false }), 2600); }
+  setCart(cart) { this.save("cart", cart); this.setState({ cart }); }
+  prod(id) { return this.PRODUCTS.find(p => p.id === id); }
+  closeModal() { this.setState({ modal: null }); }
+  clampQty(v) { return Math.min(100000, Math.max(1, parseInt(v, 10) || 1)); }
+
+  waText(r) {
+    const fmtD = d => new Date(d).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+    const lines = r.items.map((it, i) => `${i + 1}. ${it.name}: ${it.qty} ${it.unit}${it.note ? ` (${it.note})` : ""}`).join("\n");
+    return `Halo GIBS, saya ingin minta penawaran.\n\nNo: ${r.ticket}\nNama: ${r.name}\nSebagai: ${r.buyer}${r.project ? `\nProyek: ${r.project}` : ""}\nLokasi: Kec. ${r.district}, ${r.regency}\nDibutuhkan: ${r.needed ? fmtD(r.needed) : "-"}\nPembayaran: ${r.payment}\n\nDaftar:\n${lines}${r.note ? `\n\nCatatan: ${r.note}` : ""}\n\nTerima kasih.`;
+  }
+
+  newKey() {
+    try { return crypto.randomUUID(); }
+    catch (e) { const a = new Uint8Array(16); crypto.getRandomValues(a); return Array.from(a, b => b.toString(16).padStart(2, "0")).join(""); }
+  }
+
+  submit(e) {
+    e.preventDefault();
+    if (this.state.sending) return;
+    const f = this.state.form, errs = {};
+    if (f.name.trim().length < 2) errs.name = "Isi nama minimal 2 huruf.";
+    if (f.whatsapp.replace(/\D/g, "").length < 9) errs.whatsapp = "Isi nomor WhatsApp yang aktif.";
+    if (!f.regency) errs.regency = "Pilih kabupaten/kota.";
+    if (!f.district) errs.district = "Pilih kecamatan.";
+    if (!f.consent) errs.consent = "Centang persetujuan untuk melanjutkan.";
+    if (!this.state.cart.length) return this.setState({ errs, formErr: "Tambahkan minimal satu produk ke daftar." });
+    if (Object.keys(errs).length) return this.setState({ errs, formErr: "Lengkapi kolom yang ditandai merah." });
+    // Kunci yang sama dipakai ulang sampai berhasil, jadi kirim ulang setelah koneksi putus tidak membuat tiket ganda.
+    const key = this.state.rfqKey || this.newKey();
+    const cart = this.state.cart;
+    this.setState({ sending: true, errs: {}, formErr: "", rfqKey: key });
+    const body = {
+      idempotency_key: key, buyer_type: f.buyer, name: f.name, whatsapp: f.whatsapp, project: f.project,
+      regency: f.regency, district: f.district, needed_on: f.needed || "", payment: f.payment, note: f.note,
+      consent: f.consent === true, consent_version: this.PRIVACY_VERSION,
+      items: cart.map(c => ({ id: c.id, qty: c.qty, note: (c.note || "").trim() }))
+    };
+    fetch("/api/rfq", { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: JSON.stringify(body) })
+      .then(res => res.json().catch(() => ({})).then(data => ({ res, data })))
+      .then(({ res, data }) => {
+        if (!res.ok || !data.ticket) {
+          const er = data.error || {}, fe = er.fields || {}, errs2 = {};
+          ["name", "whatsapp", "regency", "district", "consent"].forEach(k => { if (fe[k]) errs2[k] = fe[k]; });
+          const msg = fe.items || fe.needed_on || er.message || "Permintaan belum terkirim. Coba lagi.";
+          return this.setState({ sending: false, errs: errs2, formErr: msg + (er.reqId ? ` (kode: ${er.reqId})` : "") });
+        }
+        const items = cart.map(c => { const p = this.prod(c.id); return { name: p.name, unit: p.unit, qty: c.qty, note: (c.note || "").trim() }; });
+        const r = Object.assign({}, f, { ticket: data.ticket, created_at: data.created_at, items });
+        this.save("cart", []);
+        this.setState({ sending: false, rfqKey: null, cart: [], form: Object.assign({}, this.EMPTY_FORM), modal: { kind: "sent", r, wa: data.wa || "", msg: this.waText(r) } });
+      })
+      .catch(() => this.setState({ sending: false, formErr: "Koneksi terputus. Periksa internet lalu tekan kirim lagi; permintaan tidak akan tercatat ganda." }));
+  }
+
+  printRfq() {
+    const m = this.state.modal; if (!m || !m.r) return; const r = m.r;
+    const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const w = window.open("", "_blank"); if (!w) return this.showToast("Izinkan pop-up untuk mengunduh PDF");
+    w.document.write(`<html><head><title>${esc(r.ticket)}</title><style>body{font-family:Arial,sans-serif;padding:32px;color:#0A1A33;font-size:13px}h2{margin:0 0 4px}table{width:100%;border-collapse:collapse;margin-top:14px}th,td{border:1px solid #ccc;padding:6px 8px;text-align:left}th{background:#F3F4F6}</style></head><body>
+      <h2>PERMINTAAN PENAWARAN</h2><p>PT Global Indo Buana Sentosa, Jl. Imam Bonjol No. 39, Cakranegara, Kota Mataram</p><hr>
+      <p><b>No:</b> ${esc(r.ticket)} &nbsp; <b>Tanggal:</b> ${new Date(r.created_at).toLocaleDateString("id-ID")}</p>
+      <p><b>Pemesan:</b> ${esc(r.name)} (${esc(r.buyer)})${r.project ? ", " + esc(r.project) : ""}</p>
+      <p><b>Lokasi kirim:</b> Kec. ${esc(r.district)}, ${esc(r.regency)}. <b>Pembayaran:</b> ${esc(r.payment)}</p>
+      <table><thead><tr><th>No</th><th>Item</th><th>Jumlah</th><th>Satuan</th><th>Catatan</th></tr></thead><tbody>${r.items.map((it, i) => `<tr><td>${i + 1}</td><td>${esc(it.name)}</td><td>${it.qty}</td><td>${esc(it.unit)}</td><td>${esc(it.note)}</td></tr>`).join("")}</tbody></table>
+      ${r.note ? `<p><b>Catatan:</b> ${esc(r.note)}</p>` : ""}<p style="margin-top:24px;font-size:11px">Dokumen ini adalah permintaan, bukan penawaran harga. Harga resmi dikirim oleh sales GIBS.</p></body></html>`);
+    w.document.close(); w.focus(); setTimeout(() => w.print(), 300);
+  }
+
+  renderVals() {
+    const S = this.state, U = this.U, I = k => this.IMG[k], wide = S.wide, route = S.route;
+    const catName = id => (this.CATS.find(c => c.id === id) || {}).name || id;
+    const cartN = S.cart.length;
+    const q = S.q.trim().toLowerCase();
+    const prods = this.PRODUCTS.filter(p => (S.activeCat === "all" || p.cat === S.activeCat) && (!q || `${p.name} ${p.brand} ${catName(p.cat)}`.toLowerCase().includes(q)));
+    const setF = k => e => { const v = e.target.value; this.setState(s => { const form = Object.assign({}, s.form, { [k]: v }); if (k === "regency") form.district = ""; return { form }; }); };
+    const f = S.form, area = f.regency && this.AREAS[f.regency];
+    const aArea = S.aReg && this.AREAS[S.aReg];
+    const errB = k => S.errs[k] ? "#B3261E" : "#D9DDE3";
+    const slides = [
+      { label: "Distributor bahan bangunan di Kota Mataram", title: "Besi beton siap kirim hari ini", desc: "Besi SNI, pipa Rucika, triplek, dan Kranz. Kirim daftar kebutuhan sekali, sales kami balas dengan penawaran lewat WhatsApp.", img: U(I("site"), 1900), href: "#/produk", cta: "Susun daftar kebutuhan", hasCta2: true },
+      { label: "Pipa dan fitting", title: "Distributor resmi pipa Rucika di Lombok", desc: "Pipa PVC dan fitting Rucika untuk saluran air bersih dan pembuangan, untuk rumah tinggal maupun perumahan.", img: U(I("rebar"), 1900), href: "#/produk?k=pipa", cta: "Lihat pipa dan fitting", hasCta2: false },
+      { label: "Pengiriman setiap hari", title: "Gratis ongkir dan buruh se-Lombok", desc: "Truk GIBS mengantar ke Mataram dan empat kabupaten lain di Lombok, setiap hari kerja.", img: U(I("truck"), 1900), href: "#/area", cta: "Cek lokasi proyek", hasCta2: false }
+    ].map((s, i) => { const on = i === S.slide; return Object.assign(s, { i, no: "0" + (i + 1), aria: "Slide " + (i + 1), op: on ? 1 : 0, vis: on ? "visible" : "hidden", hidden: on ? "false" : "true", scale: on ? 1 : 1.08, ty: on ? "0px" : "24px", numColor: on ? "#ffffff" : "rgba(255,255,255,.5)", go: () => this.goSlide(i) }); });
+    const m = S.modal;
+    return {
+      rootRef: this.rootRef,
+      hdrBg: S.scrolled || route !== "home" && S.scrolled ? "#0A1A33" : (S.menuOpen ? "#0A1A33" : "transparent"),
+      hdrShadow: S.scrolled ? "0 10px 30px -18px rgba(0,0,0,.6)" : "none",
+      topH: S.scrolled ? "0px" : "40px", barH: S.scrolled ? "76px" : "88px",
+      navDisplay: wide ? "flex" : "none", burgerDisplay: wide ? "none" : "flex", cartLabelDisplay: wide ? "inline" : "none",
+      burgerIcon: S.menuOpen ? "✕" : "☰", menuOpen: S.menuOpen && !wide,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      navItems: [["Beranda", "#/", "home"], ["Produk", "#/produk", "produk"], ["Area kirim", "#/area", "area"], ["Tentang", "#/tentang", "tentang"], ["Kontak", "#/kontak", "kontak"]].map(([label, href, r]) => ({ label, href, bar: r === route ? 1 : 0 })),
+      navItemsMobile: [["Beranda", "#/"], ["Produk", "#/produk"], ["Area kirim", "#/area"], ["Tentang", "#/tentang"], ["Kontak", "#/kontak"], ["Daftar penawaran", "#/penawaran"]].map(([label, href]) => ({ label, href })),
+      cartN, ghost: this.props.ghostWords === false ? "none" : "block",
+      isHome: route === "home", isInner: route !== "home", isProduk: route === "produk", isPenawaran: route === "penawaran", isArea: route === "area", isTentang: route === "tentang", isKontak: route === "kontak", isPrivasi: route === "privasi",
+      privacy: this.PRIVACY, privacyVersion: this.PRIVACY_VERSION,
+      page: this.PAGES[route] ? { title: this.PAGES[route][0], img: U(I(this.PAGES[route][1]), 1900) } : { title: "", img: "" },
+      slides,
+      heroPause: () => { this.paused = true; if (this.barTw) this.barTw.pause(); },
+      heroResume: () => { this.paused = false; if (this.barTw) this.barTw.resume(); },
+      heroTouchStart: e => { this._x0 = e.touches[0].clientX; },
+      heroTouchEnd: e => { if (this._x0 == null) return; const dx = e.changedTouches[0].clientX - this._x0; if (Math.abs(dx) > 50) this.goSlide(S.slide + (dx < 0 ? 1 : -1)); this._x0 = null; },
+      svcCols: wide ? "1.35fr 1fr 1fr" : "repeat(auto-fit,minmax(min(100%,300px),1fr))", svcBigRow: wide ? "span 2" : "auto",
+      services: [
+        { no: "02", title: "Gratis bongkar muat", desc: "Di wilayah layanan, Anda tidak membayar ongkos kirim maupun buruh. Tim kami yang menurunkan barang.", p1: "M8 44h38M14 44V24l13-12 13 12v20", p2: "M22 44V32h10v12", col: "auto" },
+        { no: "03", title: "Merek resmi", desc: "GIBS distributor resmi pipa Rucika di Lombok, dan menjual merek yang biasa dipakai tukang setempat.", p1: "M27 4l19 8v13c0 12-8 20-19 25C16 45 8 37 8 25V12z", p2: "M18 27l6 6 12-12", col: "auto" },
+        { no: "04", title: "Penawaran untuk proyek", desc: "Kirim daftar kebutuhan sekali. Sales menghitung semuanya dan membalas dengan penawaran tertulis yang bisa Anda teruskan ke pemilik proyek.", p1: "M12 4h22l10 10v36H12z", p2: "M34 4v10h10M19 24h18M19 31h18M19 38h11", col: wide ? "span 2" : "auto" }
+      ],
+      steps: [
+        { no: "01", title: "Pilih material dan jumlahnya", desc: "Tulis ukuran khusus di catatan tiap item." },
+        { no: "02", title: "Isi lokasi proyek", desc: "Kami cek apakah alamat Anda masuk area gratis kirim." },
+        { no: "03", title: "Kirim ke sales", desc: "Pesan WhatsApp sudah tersusun rapi, jadi sales bisa langsung menghitung." },
+        { no: "04", title: "Terima penawaran dan jadwal kirim", desc: "Barang diantar dengan armada GIBS." }
+      ],
+      matCols: wide ? "repeat(3,minmax(0,1fr))" : "repeat(auto-fit,minmax(min(100%,300px),1fr))",
+      categories: this.CATS.map((c, i) => ({ name: c.name, desc: c.desc, href: "#/produk?k=" + c.id, img: U(I(c.img), i === 0 ? 1100 : 800), count: this.PRODUCTS.filter(p => p.cat === c.id).length + " produk", row: wide && i === 0 ? "span 2" : "auto", minH: "360px" })),
+      rucikaTextOrder: wide ? 2 : 1, rucikaImgOrder: wide ? 1 : 2,
+      stats: [{ pre: "", n: 5, suf: "", label: "kabupaten dan kota dilayani di Pulau Lombok" }, { pre: "", n: 6, suf: "", label: "hari pengiriman setiap minggu" }, { pre: "Rp", n: 0, suf: "", label: "ongkos kirim dan buruh di wilayah layanan" }, { pre: "", n: 1400, suf: "+", label: "video dan posting edukasi material di Instagram" }].map(s => Object.assign(s, { shown: s.n.toLocaleString("id-ID") })),
+      posts: this.POSTS.map((p, i) => ({ title: p.title, ex: p.ex, img: U(I(p.img), 800), open: () => this.setState({ modal: { kind: "post", i } }) })),
+      // produk
+      q: S.q, onQ: e => this.setState({ q: e.target.value }),
+      chips: [{ id: "all", name: "Semua" }, ...this.CATS].map(c => { const on = S.activeCat === c.id; return { name: c.name, on: on ? "true" : "false", bg: on ? "#0A1A33" : "#fff", fg: on ? "#fff" : "#0A1A33", border: on ? "#0A1A33" : "#D9DDE3", pick: () => this.setState({ activeCat: c.id }) }; }),
+      noProducts: prods.length === 0,
+      products: prods.map(p => {
+        const inC = S.cart.find(c => c.id === p.id), st = this.STOCK[p.stock];
+        const qty = S.qty[p.id] != null ? S.qty[p.id] : (inC ? inC.qty : 1);
+        const setQ = v => this.setState(s => ({ qty: Object.assign({}, s.qty, { [p.id]: v }) }));
+        return { name: p.name, brand: p.brand, unit: p.unit, cat: catName(p.cat), img: U(I(p.img), 700), note: p.note || "", hasNote: !!p.note, stockLabel: st[0], pillBg: st[1], pillFg: st[2], qty,
+          onQty: e => setQ(e.target.value.replace(/\D/g, "")), dec: () => setQ(Math.max(1, this.clampQty(qty) - 1)), inc: () => setQ(this.clampQty(qty) + 1),
+          btnLabel: inC ? "Perbarui jumlah" : "Tambah ke daftar", btnBg: inC ? "#0A1A33" : "#E3B23C", btnFg: inC ? "#fff" : "#0A1A33",
+          add: () => { const n = this.clampQty(qty); const cart = S.cart.map(c => Object.assign({}, c)); const ex = cart.find(c => c.id === p.id); if (ex) ex.qty = n; else cart.push({ id: p.id, qty: n, note: "" }); this.setCart(cart); setQ(n); this.showToast(`${p.name}: ${n} ${p.unit} ${ex ? "diperbarui" : "ditambahkan"}`); } };
+      }),
+      showSticky: !wide && route === "produk" && cartN > 0,
+      // penawaran
+      rfqCols: wide ? "1.1fr 1fr" : "minmax(0,1fr)",
+      cartEmpty: cartN === 0,
+      lines: S.cart.map((c, i) => { const p = this.prod(c.id); const upd = ch => { const cart = S.cart.map(x => Object.assign({}, x)); Object.assign(cart[i], ch); this.setCart(cart); };
+        return { name: p.name, brand: p.brand, unit: p.unit, img: U(I(p.img), 200), qty: c.qty, note: c.note || "",
+          dec: () => upd({ qty: Math.max(1, c.qty - 1) }), inc: () => upd({ qty: c.qty + 1 }), onQty: e => upd({ qty: this.clampQty(e.target.value) }), onNote: e => upd({ note: e.target.value }),
+          rm: () => { const cart = S.cart.filter((_, j) => j !== i); this.setCart(cart); this.showToast(`${p.name} dihapus dari daftar`); } }; }),
+      buyerTypes: ["Kontraktor", "Toko bangunan", "Perorangan"].map(n => { const on = f.buyer === n; return { name: n, on: on ? "true" : "false", border: on ? "#0A1A33" : "#D9DDE3", bg: on ? "#F3F4F6" : "#fff", dot: on ? "#0A1A33" : "#fff", pick: () => this.setState(s => ({ form: Object.assign({}, s.form, { buyer: n }) })) }; }),
+      f, on: { name: setF("name"), whatsapp: setF("whatsapp"), project: setF("project"), regency: setF("regency"), district: setF("district"), needed: setF("needed"), payment: setF("payment"), note: setF("note"),
+        consent: e => { const v = e.target.checked; this.setState(s => ({ form: Object.assign({}, s.form, { consent: v }) })); } },
+      err: { name: S.errs.name || "", whatsapp: S.errs.whatsapp || "", regency: S.errs.regency || "", district: S.errs.district || "", consent: S.errs.consent || "", nameB: errB("name"), waB: errB("whatsapp"), regB: errB("regency"), disB: errB("district") },
+      regencies: Object.keys(this.AREAS),
+      formDistricts: area ? area.d : [], districtPh: area ? "Pilih…" : "Pilih kabupaten dulu",
+      areaNote: !area ? { show: false } : area.free ? { show: true, bg: "#E2F2E8", fg: "#1E7A46", text: `${f.regency} termasuk area gratis ongkir dan buruh. ${area.min} (contoh).` } : { show: true, bg: "#FFF0D9", fg: "#9A5B00", text: "Di luar area gratis kirim. Ongkos kirim dihitung oleh sales." },
+      formErr: S.formErr, submit: e => this.submit(e),
+      sendDisabled: S.sending || cartN === 0, sendOp: S.sending || cartN === 0 ? .45 : 1, sendLabel: S.sending ? "Mengirim…" : "Kirim permintaan penawaran",
+      // area
+      areaList: Object.entries(this.AREAS).map(([k, a]) => { const on = S.aReg === k; return { name: k, sub: a.d.length > 2 ? a.d.length + " kecamatan" : a.d.join(", "), badge: a.free ? "Gratis kirim" : "Hubungi sales", edge: a.free ? "#E3B23C" : "#3A4C6B", pillBg: a.free ? "#E3B23C" : "#3A4C6B", pillFg: a.free ? "#0A1A33" : "#DCE4F0", bg: on ? "#1B4F9C" : "#13284A", pick: () => this.setState({ aReg: k, aDist: "" }) }; }),
+      aReg: S.aReg, aDist: S.aDist,
+      onAReg: e => this.setState({ aReg: e.target.value, aDist: "" }), onADist: e => this.setState({ aDist: e.target.value }),
+      aDistricts: aArea ? aArea.d : [], aDistPh: aArea ? "Pilih…" : "Pilih kabupaten dulu",
+      aRes: !(aArea && S.aDist) ? { show: false } : aArea.free
+        ? { show: true, edge: "#1E7A46", title: "Gratis ongkir dan buruh", sub: `Kec. ${S.aDist}, ${S.aReg}`, points: [`Estimasi kirim: ${aArea.eta}`, aArea.min, "Barang diturunkan tim GIBS"], href: "#/produk", cta: "Susun daftar kebutuhan" }
+        : { show: true, edge: "#9A5B00", title: "Hubungi sales", sub: `Untuk ${S.aDist}, pengiriman dijadwalkan dan ongkos kirim dihitung terpisah.`, points: [], href: "#/penawaran", cta: "Kirim permintaan" },
+      // tentang & kontak
+      values: [{ t: "Gudang sendiri", d: "Stok disimpan di Cakranegara, dekat pusat Kota Mataram." }, { t: "Armada sendiri", d: "Truk GIBS mengantar setiap hari kerja ke lima wilayah di Lombok." }, { t: "Rucika resmi", d: "Distributor resmi pipa Rucika di Pulau Lombok." }],
+      faq: [
+        { q: "Kenapa harga tidak ditampilkan langsung?", a: "Harga besi dan material lain naik turun mengikuti pasar, dan juga bergantung pada jumlah yang dipesan. Sales mengirim harga terbaru sesuai daftar Anda." },
+        { q: "Berapa lama permintaan dibalas?", a: "Permintaan dibalas pada jam operasional, Senin sampai Sabtu pukul 09.00-17.00 WITA. Permintaan yang masuk di luar jam itu dibalas pada hari kerja berikutnya." },
+        { q: "Bisa kirim bertahap untuk proyek?", a: "Bisa. Tulis jadwal yang Anda butuhkan di kolom catatan saat mengirim permintaan." },
+        { q: "Pembayaran bisa bagaimana?", a: "COD dan transfer. Skema pembayaran untuk proyek dibicarakan langsung dengan sales." }
+      ],
+      contacts: [
+        { t: "Toko dan gudang", d: "Jl. Imam Bonjol No. 39, Cakranegara Utara, Kec. Cakranegara, Kota Mataram, NTB. Depan Universitas 45 Mataram.", p1: "M20 36s-11-9.6-11-18a11 11 0 0 1 22 0c0 8.4-11 18-11 18z", p2: "M24 18a4 4 0 1 1-8 0a4 4 0 1 1 8 0", link: false },
+        { t: "Jam buka", d: "Senin sampai Sabtu, 09.00-17.00 WITA. Minggu tutup.", p1: "M35 20a15 15 0 1 1-30 0a15 15 0 1 1 30 0", p2: "M20 11v9l6 4", link: false },
+        { t: "Order dan admin", d: "Nomor WhatsApp order, telepon, dan admin keuangan ditampilkan di versi live.", p1: "M7 33l2-6a13 13 0 1 1 5 4z", p2: "", link: true }
+      ],
+      demoTag: wide ? "block" : "none",
+      toast: S.toast, toastY: S.toastOn ? "0px" : "140px",
+      modalOpen: !!m,
+      modal: !m ? {} : m.kind === "post" ? Object.assign({ isPost: true, isSent: false }, this.POSTS[m.i]) : { isPost: false, isSent: true, title: "Permintaan terkirim", ticket: m.r.ticket, msg: m.msg, waHref: "https://wa.me/" + (/^\d{8,16}$/.test(m.wa || "") ? m.wa : "") + "?text=" + encodeURIComponent(m.msg),
+        waNote: m.wa ? "Tombol WhatsApp membuka chat dengan sales GIBS dan pesan di atas sudah terisi." : "Nomor WhatsApp tujuan GIBS belum diatur (WA_NUMBER); pilih kontak GIBS secara manual." },
+      closeModal: () => this.closeModal(),
+      backdrop: e => { if (e.target === e.currentTarget) this.closeModal(); },
+      copyMsg: () => { const t = m && m.msg; if (!t) return; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => this.showToast("Pesan disalin"), () => this.showToast("Salin manual dari kotak pesan")); },
+      printRfq: () => this.printRfq()
+    };
+  }
+}
+</script>
+</body>
+</html>

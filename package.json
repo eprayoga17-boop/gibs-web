@@ -1,0 +1,30 @@
+{
+  "name": "gibs-web",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Website PT Global Indo Buana Sentosa (GIBS Site) + API permintaan penawaran di Postgres (Supabase/Neon)",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.9"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "migrate": "node --env-file-if-exists=.env scripts/migrate.js",
+    "dsr": "node --env-file-if-exists=.env scripts/dsr.js",
+    "retention": "node --env-file-if-exists=.env scripts/retention.js",
+    "test": "node --test test/*.test.js",
+    "audit": "npm audit --omit=dev --audit-level=moderate"
+  },
+  "dependencies": {
+    "@fontsource/archivo": "5.3.0",
+    "@fontsource/big-shoulders-display": "5.3.0",
+    "gsap": "3.13.0",
+    "lenis": "1.1.13",
+    "pg": "8.16.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.8"
+  }
+}
